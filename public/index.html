@@ -65,7 +65,7 @@
                 
                 <div class="video-wrapper brightness">
                     <video id="video" controls autoplay style="display:none">
-                        <source src="api/video?url=V6a3EMB6S6Q" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+                        <source src="api/video?url=V6a3EMB6S6Q" type='video/mp4; "'>
                        
                     </video>
                     
@@ -78,7 +78,7 @@
 			var AMOUNT = 100;
 
 			var container, stats;
-
+            var intersects, projector;
 			var camera, scene, renderer;
 
 			var video, image, imageContext,
@@ -87,18 +87,18 @@
 
 			var mesh;
             var raycaster;
+            var objects = [];
             
 			var mouseX = 0;
 			var mouseY = 0;
 
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
-
-            var intersected;
             
 			init();
 			animate();
-
+            
+            
 			function init() {
 
 				container = document.getElementById("three-canvas");
@@ -148,12 +148,19 @@
 
 				mesh = new THREE.Mesh( plane, material );
 				mesh.scale.x = mesh.scale.y = mesh.scale.z = 1.5;
+                mesh.callback = function() {
+                    console.log("oho", this.name );
+                    //console.log(video);
+                    video.paused ? video.play() : video.pause()
+                }
+                objects.push(mesh);
 				scene.add(mesh);
 
 				mesh = new THREE.Mesh( plane, materialReflection );
 				mesh.position.y = -306;
 				mesh.rotation.x = - Math.PI;
 				mesh.scale.x = mesh.scale.y = mesh.scale.z = 1.5;
+                
 				scene.add( mesh );
 
 				//
@@ -191,9 +198,10 @@
 
 				}
                 
-                
+                //console.log(scene.children);
                 raycaster = new THREE.Raycaster();
-
+                projector = new THREE.Projector();
+                
 				renderer = new THREE.CanvasRenderer();
                 console.log(renderer);
 				renderer.setClearColor( 0xf0f0f0 );
@@ -202,9 +210,10 @@
 				container.appendChild( renderer.domElement );
 
 				
-
+                var vvideo = document.getElementsByTagName("canvas")[0];
+                
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-                document.addEventListener( 'mouseclick', onDocumentMouseMove, false );
+                document.addEventListener('mousedown', onMouseDown, false);
 				//
 
 				window.addEventListener( 'resize', onWindowResize, false );
@@ -230,11 +239,29 @@
 
 			}
             
-            function onDocumentMouseClick( event ) {
-
+            function onVideoClick( event ) {
+                event.preventDefault();
 				console.log("LOL");
 
 			}
+            
+            function onMouseDown(event){
+                event.preventDefault();
+                
+                /* Draw the video first then raycast through it */
+                var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
+				//projector.unprojectVector( vector, camera );
+                raycaster.setFromCamera(vector, camera);
+                
+				//var ray = new THREE.Ray( camera.position, vector.sub( camera.position ).normalize() );
+                
+                var intersects = raycaster.intersectObjects( objects );
+                //console.log(intersects);
+
+                if(intersects.length > 0){
+                    intersects[0].object.callback();
+                }
+            }
 
 			//
 
@@ -260,11 +287,8 @@
                     
 				}
                 
-                /* Draw the video first then raycast through it */
-                raycaster.setFromCamera(new THREE.Vector2(mouseX, mouseY), camera);
-                var intersects = raycaster.intersectObjects( scene.children );
-                //console.log(intersects);
-
+                
+                
 				imageReflectionContext.drawImage( image, 0, 0 );
 				imageReflectionContext.fillStyle = imageReflectionGradient;
 				imageReflectionContext.fillRect( 0, 0, 480, 204 );
@@ -278,7 +302,11 @@
                 </div>
             </main>
 			<footer id="footer" class="footer">
-                
+                <div class="wrapper">
+                    <ul class="emojis">
+                        <li></li>
+                    </ul>
+                </div>
             </footer>
         </div>
     </body>
