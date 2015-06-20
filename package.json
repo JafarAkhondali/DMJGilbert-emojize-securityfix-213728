@@ -9,7 +9,8 @@
 		"glob": "*",
 		"youtube-dl": "*",
 		"restler": "*",
-		"async": "*"
+		"async": "*",
+		"iod-node": "https://github.com/HP-IDOL-OnDemand/iod-node"
 	},
 	"devDependencies": {
 		"grunt": "~0.4.1",
