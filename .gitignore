@@ -2,3 +2,6 @@ node_modules
 .tmp
 .sass-cache
 app/bower_components
+/ffmpeg.exe
+*.mp4
+/server/cache/**/*.png
