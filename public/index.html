@@ -74,7 +74,7 @@
                     </div>
                        
         <script>
-
+			$.ajaxSetup({ cache: false });
 			var AMOUNT = 100;
 
 			var container, stats;
@@ -132,7 +132,7 @@
                     data = [];
 					for(var i = 0; i < _data.length; i++){
 						var dataSet = [];
-						if (_data[i].faces.length > 0) {
+						if (_data[i].faces && _data[i].faces.length > 0) {
 							for (var j = 0; j < _data[i].faces.length; j++) {
 								if (_data[i].faces[j].points.length > 0) {
 									for (var k = 0; k < _data[i].faces[j].points.length; k++) {
@@ -144,14 +144,14 @@
 
 										var eye = {};
 
-										if (name == "basic eye right") {
-											//console.log("hello right: ", name, x, y);
-											//target.x
-											eye.rightX = target.x;
-											eye.rightY = target.y;
-											eye.name = target.name;
-											dataSet.push(eye);
-										}
+//										if (name == "basic eye right") {
+//											//console.log("hello right: ", name, x, y);
+//											//target.x
+//											eye.rightX = target.x;
+//											eye.rightY = target.y;
+//											eye.name = target.name;
+//											dataSet.push(eye);
+//										}
 
 										if (name == "basic eye left") {
 											//console.log("hello left: ", name, x, y);
@@ -450,17 +450,30 @@ data[i].faces[j].points.length
 				camera.lookAt( scene.position );
 
 				if ( video.readyState === video.HAVE_ENOUGH_DATA ) {
-
 					imageContext.drawImage( video, 0, 0 );
+
+					for(var i = 0; i < eyes.length; i++){
+						var eye = eyes[i];
+						var img = document.getElementById('hackyeyes');
+						var x, y;
+						if (eye.rightX) {
+							x = eye.rightX;
+							y = eye.rightY;
+						}else {
+							x = eye.leftX - 20;
+							y = eye.leftY - 50;
+						}
+						imageContext.drawImage(img, x, y);
+					}
 
 					if ( texture ) texture.needsUpdate = true;
 					if ( textureReflection ) textureReflection.needsUpdate = true;
-                    
 				}
-                
+
                 
                 
 				imageReflectionContext.drawImage( image, 0, 0 );
+
 				imageReflectionContext.fillStyle = imageReflectionGradient;
 				imageReflectionContext.fillRect( 0, 0, 480, 204 );
 
@@ -476,7 +489,7 @@ data[i].faces[j].points.length
                 <div class="footer-wrapper">
                     <a class="arrow"></a>
                     <ul class="emojis">
-                        <li class="item-visible"><img src="img/icon-angry-bird.png" alt=""></li><li class="item-visible"><img src="img/icon-burger.png" alt=""></li><li class="item-visible"><img src="img/icon-mario.png" alt=""></li><li class="item-visible"><img src="img/icon-ipod-nano.png" alt=""></li><li class="item-visible"><img src="img/icon-angry-bird-2.png" alt=""></li><li class="item-visible"><img src="img/icon-fries.png" alt=""></li><li class="item-visible"><img src="img/icon-minion.png" alt=""></li><li class="item-visible"><img src="img/icon-simpson.png" alt=""></li><li><img src="img/smileys/icon-frowny.png" alt=""></li><li><img src="img/smileys/icon-2.png" alt=""></li><li><img src="img/smileys/icon-3.png" alt=""></li><li><img src="img/smileys/icon-4.png" alt=""></li><li><img src="img/smileys/icon-5.png" alt=""></li><li><img src="img/smileys/icon-6.png" alt=""></li><li><img src="img/smileys/icon-7.png" alt=""></li><li><img src="img/smileys/icon-8.png" alt=""></li><li><img src="img/smileys/icon-9.png" alt=""></li><li><img src="img/smileys/icon-10.png" alt=""></li><li><img src="img/smileys/icon-11.png" alt=""></li><li><img src="img/smileys/icon-12.png" alt=""></li><li><img src="img/smileys/icon-13.png" alt=""></li><li><img src="img/smileys/icon-14.png" alt=""></li><li><img src="img/smileys/icon-15.png" alt=""></li>
+                        <li class="item-visible"><img src="img/icon-angry-bird.png" alt=""></li><li class="item-visible"><img src="img/icon-burger.png" alt=""></li><li class="item-visible"><img src="img/icon-mario.png" alt=""></li><li class="item-visible"><img src="img/icon-ipod-nano.png" alt=""></li><li class="item-visible"><img src="img/icon-angry-bird-2.png" alt=""></li><li class="item-visible"><img src="img/icon-fries.png" alt=""></li><li class="item-visible"><img src="img/icon-minion.png" alt=""></li><li class="item-visible"><img src="img/icon-simpson.png" alt=""></li><li><img src="img/smileys/icon-frowny.png" alt=""></li><li><img src="img/smileys/icon-2.png" alt=""></li><li><img src="img/smileys/icon-3.png" alt=""></li><li><img src="img/smileys/icon-4.png" alt=""></li><li><img src="img/smileys/icon-5.png" alt=""></li><li><img src="img/smileys/icon-6.png" alt=""></li><li><img id="hackyeyes" src="img/smileys/icon-7.png" alt=""></li><li><img src="img/smileys/icon-8.png" alt=""></li><li><img src="img/smileys/icon-9.png" alt=""></li><li><img src="img/smileys/icon-10.png" alt=""></li><li><img src="img/smileys/icon-11.png" alt=""></li><li><img src="img/smileys/icon-12.png" alt=""></li><li><img src="img/smileys/icon-13.png" alt=""></li><li><img src="img/smileys/icon-14.png" alt=""></li><li><img src="img/smileys/icon-15.png" alt=""></li>
                     </ul>
                 </div>
             </footer>
