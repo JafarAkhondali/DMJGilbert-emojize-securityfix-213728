@@ -109,7 +109,7 @@ body{
 
 /* HEADER */
 .header{
-    padding: 10px 20px;
+    padding: 8px 20px;
     background: #F272B8;
     position: fixed;
     width: 100%;
@@ -124,8 +124,8 @@ body{
 
 .user-profile img{
     float: left;
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
     margin-right: 0.5em;
     border: 2px solid #fff;
 
@@ -142,7 +142,7 @@ body{
     margin: 3px;
     padding: 0;
     font-size: 1.0em;
-    line-height: 1.0em;
+    line-height: 0.9em;
     font-weight: 800;
     color: #fff;
 
@@ -206,14 +206,14 @@ h1 .logo img{
     position: relative;
     width: 80%;
     max-width: 640px;
-    margin: 20px auto;
+    margin: 20px auto 20px auto;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
 .main-search .input-search{
     width: 100%;
-    
+    position: relative;
     margin: 0;
     
     padding: 1em 2em;
@@ -224,6 +224,7 @@ h1 .logo img{
     background: #f1f1f1;
     border: 2px solid #eee;
     outline: 0 none;
+    
     
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -262,6 +263,9 @@ h1 .logo img{
     filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'brightness\'><feColorMatrix type=\'matrix\' values=\'1.2 0 0 0 0 0 1.2 0 0 0 0 0 1.2 0 0 0 0 0 1.2 0\'/></filter></svg>#brightness"); /* Firefox 3.5+ */
     -webkit-filter:brightness(108.5%); /* Chrome 19+ & Safari 6+ */
 }
+.video-wrapper{
+    overflow: hidden;
+}
 
 
 
@@ -298,11 +302,23 @@ h1 .logo img{
     padding: 10px 0;
     max-height: 100px;
     overflow: hidden;
+    
+    
 }
 .emojis li{
     display: inline-block;
     vertical-align: center;
     margin: 0 0.9em 10px 0;
+    opacity: 0;
+    
+    -webkit-transition: all .50s;
+    -moz-transition: all .50s;
+    -o-transition: all .50s;
+    transition: all .50s;
+}
+.emojis li.item-visible{
+    opacity: 1;
+    
 }
 .emojis li:last-child{
     margin: 0;
@@ -312,6 +328,20 @@ h1 .logo img{
     height: auto;
 }
 
+.emojis li.translate-show{
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -ms-transform: scale(1);
+}
+.emojis li.translate-hide{
+    transform: translateY(80px) scale(0);
+    -webkit-transform: translateY(80px) scale(0);
+    -moz-transform: translateY(80px) scale(0);
+    -o-transform: translateY(80px) scale(0);
+    -ms-transform: translate(0, 120px) scale(0);
+}
 .arrow{
     display: block;
     width: 32px;

@@ -59,7 +59,7 @@
                 </h1>
                 
                 <form class="main-search">
-                    <input id="video-input" class="light-input input-search" type="search" placeholder="Paste video URL...">
+                    <input id="vid-input" class="light-input input-search" type="search" placeholder="Paste video URL...">
                     <button id="video-submit" class="button-search" type="submit">Search</button>
                 </form>
                 
@@ -95,6 +95,14 @@
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
             
+            
+            
+            
+            
+            
+            
+            //console.log(eyes);
+            
 			init();
 			animate();
             
@@ -111,7 +119,7 @@
 				scene = new THREE.Scene();
 
 				video = document.getElementById( 'video' );
-
+console.log(video);
 				//
 
 				image = document.createElement( 'canvas' );
@@ -213,7 +221,7 @@
                 var vvideo = document.getElementsByTagName("canvas")[0];
                 
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-                document.addEventListener('mousedown', onMouseDown, false);
+                container.addEventListener('mousedown', onMouseDown, false);
 				//
 
 				window.addEventListener( 'resize', onWindowResize, false );
@@ -305,22 +313,7 @@
                 <div class="footer-wrapper">
                     <a class="arrow"></a>
                     <ul class="emojis">
-                        <li><img src="img/icon-angry-bird.png" alt=""></li><li><img src="img/icon-burger.png" alt=""></li><li><img src="img/icon-mario.png" alt=""></li><li><img src="img/icon-ipod-nano.png" alt=""></li><li><img src="img/icon-angry-bird-2.png" alt=""></li><li><img src="img/icon-fries.png" alt=""></li><li><img src="img/icon-minion.png" alt=""></li><li><img src="img/icon-simpson.png" alt=""></li>
-                        <li><img src="img/smileys/icon-frowny.png" alt=""></li>
-                        <li><img src="img/smileys/icon-2.png" alt=""></li>
-                        <li><img src="img/smileys/icon-3.png" alt=""></li>
-                        <li><img src="img/smileys/icon-4.png" alt=""></li>
-                        <li><img src="img/smileys/icon-5.png" alt=""></li>
-                        <li><img src="img/smileys/icon-6.png" alt=""></li>
-                        <li><img src="img/smileys/icon-7.png" alt=""></li>
-                        <li><img src="img/smileys/icon-8.png" alt=""></li>
-                        <li><img src="img/smileys/icon-9.png" alt=""></li>
-                        <li><img src="img/smileys/icon-10.png" alt=""></li>
-                        <li><img src="img/smileys/icon-11.png" alt=""></li>
-                        <li><img src="img/smileys/icon-12.png" alt=""></li>
-                        <li><img src="img/smileys/icon-13.png" alt=""></li>
-                        <li><img src="img/smileys/icon-14.png" alt=""></li>
-                        <li><img src="img/smileys/icon-15.png" alt=""></li>
+                        <li class="item-visible"><img src="img/icon-angry-bird.png" alt=""></li><li class="item-visible"><img src="img/icon-burger.png" alt=""></li><li class="item-visible"><img src="img/icon-mario.png" alt=""></li><li class="item-visible"><img src="img/icon-ipod-nano.png" alt=""></li><li class="item-visible"><img src="img/icon-angry-bird-2.png" alt=""></li><li class="item-visible"><img src="img/icon-fries.png" alt=""></li><li class="item-visible"><img src="img/icon-minion.png" alt=""></li><li class="item-visible"><img src="img/icon-simpson.png" alt=""></li><li><img src="img/smileys/icon-frowny.png" alt=""></li><li><img src="img/smileys/icon-2.png" alt=""></li><li><img src="img/smileys/icon-3.png" alt=""></li><li><img src="img/smileys/icon-4.png" alt=""></li><li><img src="img/smileys/icon-5.png" alt=""></li><li><img src="img/smileys/icon-6.png" alt=""></li><li><img src="img/smileys/icon-7.png" alt=""></li><li><img src="img/smileys/icon-8.png" alt=""></li><li><img src="img/smileys/icon-9.png" alt=""></li><li><img src="img/smileys/icon-10.png" alt=""></li><li><img src="img/smileys/icon-11.png" alt=""></li><li><img src="img/smileys/icon-12.png" alt=""></li><li><img src="img/smileys/icon-13.png" alt=""></li><li><img src="img/smileys/icon-14.png" alt=""></li><li><img src="img/smileys/icon-15.png" alt=""></li>
                     </ul>
                 </div>
             </footer>
