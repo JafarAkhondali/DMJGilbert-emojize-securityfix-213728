@@ -39,6 +39,9 @@ module.exports = function (app) {
 						}
 					}, function (err, results) {
 						fs.writeFile(CACHE_DIR + url + "/data.json", JSON.stringify(results), function (err) {});
+						if(err){
+							console.log(err);
+						}
 						res.jsonp(results);
 					})
 				});
@@ -137,6 +140,7 @@ function processVideo(ytid, callback) {
 			var exec = require('child_process').exec;
 			var child = exec('ffmpeg -i ' + videoLocation + ' -r 10 -vcodec png ' + captureExpression, function (error, stdout, stderr) {
 				fs.readdir(captureLocation, function (err, files) {
+					console.log(files);
 					for (var i = 0; i < files.length; i++) {
 						files[i] = captureLocation + files[i];
 					}
