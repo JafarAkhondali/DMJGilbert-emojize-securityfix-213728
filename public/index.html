@@ -129,56 +129,60 @@
                 $.getJSON('api/youtube', {
                     url: url
                 }).done(function (_data) {
-                    data = _data;
+                    data = [];
+					for(var i = 0; i < _data.length; i++){
+						var dataSet = [];
+						if (_data[i].faces.length > 0) {
+							for (var j = 0; j < _data[i].faces.length; j++) {
+								if (_data[i].faces[j].points.length > 0) {
+									for (var k = 0; k < _data[i].faces[j].points.length; k++) {
+
+										target = _data[i].faces[j].points[k];
+										name = target.name;
+										x = target.x;
+										y = target.y;
+
+										var eye = {};
+
+										if (name == "basic eye right") {
+											//console.log("hello right: ", name, x, y);
+											//target.x
+											eye.rightX = target.x;
+											eye.rightY = target.y;
+											eye.name = target.name;
+											dataSet.push(eye);
+										}
+
+										if (name == "basic eye left") {
+											//console.log("hello left: ", name, x, y);
+											eye.leftX = target.x;
+											eye.leftY = target.y;
+											eye.name = target.name;
+											dataSet.push(eye);
+										}
+									}
+								}
+							}
+						}
+						data.push(dataSet);
+					}
                 });
             }
 
 
             video = document.getElementById('video');
-            video.addEventListener('timeupdate', function () {
+            setInterval(function () {
                 var i = Math.round(video.currentTime * 10);
                 eyes = [];
-                var string = "eye";
                 var target, name, x, y;
-                if (data) {
+                if (data && !video.paused) {
                     console.log(i);
-                    if (data[i].faces.length > 0) {
-                        for (var j = 0; j < data[i].faces.length; j++) {
-                            if (data[i].faces[j].points.length > 0) {
-                                //console.log(data[i].faces[j].points);
-
-                                for (var k = 0; k < data[i].faces[j].points.length; k++) {
-
-                                    target = data[i].faces[j].points[k];
-                                    name = target.name;
-                                    x = target.x;
-                                    y = target.y;
-
-                                    var eye = {};
-
-                                    if (name == "basic eye right") {
-                                        //console.log("hello right: ", name, x, y);
-                                        //target.x
-                                        eye.rightX = target.x;
-                                        eye.rightY = target.y;
-                                        eye.name = target.name;
-                                        eyes.push(eye);
-                                    }
-
-                                    if (name == "basic eye left") {
-                                        //console.log("hello left: ", name, x, y);
-                                        eye.leftX = target.x;
-                                        eye.leftY = target.y;
-                                        eye.name = target.name;
-                                        eyes.push(eye);
-                                    }
-                                }
-                            }
-                        }
-                        console.log(eyes);
-                    }
-                }
-            }) 
+                    eyes = data[i];
+					console.log(eyes);
+                }else{
+					eyes = [];
+				}
+            }, 100)
     
             function checkStatus(data){
                 console.log("done"); 
