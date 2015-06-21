@@ -95,7 +95,7 @@
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
             
-            
+            var data;
             var eyes = [];
             
             var eyesMaterial;
@@ -109,7 +109,7 @@
             
             
             function grabData(){
-                $("#video-submit").on("click", function(e){
+                $("#video-submit").on("click", function (e) {
                     e.preventDefault();
                     var videoInput = $("#vid-input").val();
                     console.log(videoInput);
@@ -121,16 +121,64 @@
 
                     queryAPI(videoUrl);
                 });
-
             }
             
-            function queryAPI(url){
+
+
+            function queryAPI(url) {
                 $.getJSON('api/youtube', {
                     url: url
-                }).done(function(data){
-                    checkStatus(data);
+                }).done(function (_data) {
+                    data = _data;
                 });
             }
+
+
+            video = document.getElementById('video');
+            video.addEventListener('timeupdate', function () {
+                var i = Math.round(video.currentTime * 10);
+                eyes = [];
+                var string = "eye";
+                var target, name, x, y;
+                if (data) {
+                    console.log(i);
+                    if (data[i].faces.length > 0) {
+                        for (var j = 0; j < data[i].faces.length; j++) {
+                            if (data[i].faces[j].points.length > 0) {
+                                //console.log(data[i].faces[j].points);
+
+                                for (var k = 0; k < data[i].faces[j].points.length; k++) {
+
+                                    target = data[i].faces[j].points[k];
+                                    name = target.name;
+                                    x = target.x;
+                                    y = target.y;
+
+                                    var eye = {};
+
+                                    if (name == "basic eye right") {
+                                        //console.log("hello right: ", name, x, y);
+                                        //target.x
+                                        eye.rightX = target.x;
+                                        eye.rightY = target.y;
+                                        eye.name = target.name;
+                                        eyes.push(eye);
+                                    }
+
+                                    if (name == "basic eye left") {
+                                        //console.log("hello left: ", name, x, y);
+                                        eye.leftX = target.x;
+                                        eye.leftY = target.y;
+                                        eye.name = target.name;
+                                        eyes.push(eye);
+                                    }
+                                }
+                            }
+                        }
+                        console.log(eyes);
+                    }
+                }
+            }) 
     
             function checkStatus(data){
                 console.log("done"); 
@@ -188,8 +236,6 @@ data[i].faces[j].points.length
 				scene = new THREE.Scene();
 
 				video = document.getElementById( 'video' );
-console.log(video);
-				//
 
 				image = document.createElement( 'canvas' );
 				image.width = 480;
@@ -275,6 +321,7 @@ console.log(video);
 
 				}
                 
+                /*
                 eyesMaterial = new THREE.ParticleCanvasMaterial( {
 
 					color: 0x000000,
@@ -288,6 +335,7 @@ console.log(video);
 					}
 
 				} );
+                */
                 
                 //console.log(scene.children);
                 raycaster = new THREE.Raycaster();
