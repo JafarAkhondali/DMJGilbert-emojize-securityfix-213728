@@ -76,17 +76,17 @@
         <script>
 
 			var AMOUNT = 100;
-
+            var particle2, particle3;
 			var container, stats;
             var intersects, projector;
 			var camera, scene, renderer;
 
 			var video, image, imageContext,
 			imageReflection, imageReflectionContext, imageReflectionGradient,
-			texture, textureReflection;
+			texture, textureReflection, texture2;
 
 			var mesh;
-            var raycaster;
+            var raycaster, raycaster2;
             var objects = [];
             
 			var mouseX = 0;
@@ -98,8 +98,8 @@
             var data;
             var eyes = [];
             
-            var eyesMaterial;
-            
+            var eyesMaterial, birdsMaterial;
+            var PI2 = Math.PI * 2;
             
             //console.log(eyes);
             
@@ -168,8 +168,18 @@
 					}
                 });
             }
-
-
+            
+            
+            var originalX = 640;
+            var originalY = 360;
+            var aspectRatioX = ($(".video-wrapper").width() - originalX) / 2;
+            var aspectRatioY = ($(".video-wrapper").height() - originalY) / 2;
+            var offsetTop = aspectRatioY;
+            var offsetLeft = aspectRatioX;
+            
+            console.log(offsetTop);
+            console.log(offsetLeft);
+            
             video = document.getElementById('video');
             setInterval(function () {
                 var i = Math.round(video.currentTime * 10);
@@ -179,9 +189,61 @@
                     console.log(i);
                     eyes = data[i];
 					console.log(eyes);
+                    
+                    
+                    
+                    
+                    for(var j = 0; j < eyes.length; j++){
+                        if(particle2){
+                            scene.remove(particle2);
+                        }
+                        if(eyes[j].rightX && eyes[j].rightY){
+                            x = eyes[j].rightX;
+                            y = eyes[j].rightY;
+                        }
+
+                        if(eyes[j].leftX && eyes[j].leftY){
+                            x = eyes[j].leftX;
+                            y = eyes[j].leftY;
+                        }
+                        console.log("X: ",x);
+                        console.log("Y: ",y);
+                        
+                        
+                        var vector = new THREE.Vector3( ( (x + offsetLeft) / window.innerWidth ) * 2 - 1, - ( (y + offsetTop) / window.innerHeight ) * 2 + 1, 0.5 );
+                        console.log("VECTOR: ", vector);
+                        raycaster2.setFromCamera(vector, camera);
+
+                        var intersects = raycaster2.intersectObjects(objects);
+
+                        if(intersects.length > 0){
+                            console.log("intersected!");
+
+                            particle2 = new THREE.Sprite(eyesMaterial);
+                            particle2.position.set(intersects[0].point.x, intersects[0].point.y, 50);
+                            console.log(intersects);
+                            console.log(particle2);
+                            particle2.scale.x = particle2.scale.y = 70;
+
+                            
+                            scene.add( particle2 );
+                        }
+                        
+                        particle3 = new THREE.Sprite(birdsMaterial);
+                        var v = new THREE.Vector3(-189, -60, 50);
+                particle3.position.set(v.x, v.y, v.z);
+                particle3.scale.x = particle3.scale.y = 80;
+                scene.add(particle3);
+                    }
+                    
+                    
                 }else{
 					eyes = [];
 				}
+                
+                
+                
+                
             }, 100)
     
             function checkStatus(data){
@@ -278,7 +340,11 @@ data[i].faces[j].points.length
                 mesh.callback = function() {
                     console.log("oho", this.name );
                     //console.log(video);
+                    
                     video.paused ? video.play() : video.pause()
+                }
+                mesh.drawcallback = function(){
+                    
                 }
                 objects.push(mesh);
 				scene.add(mesh);
@@ -296,7 +362,7 @@ data[i].faces[j].points.length
 				var amountx = 10;
 				var amounty = 10;
 
-				var PI2 = Math.PI * 2;
+				
 				var material = new THREE.SpriteCanvasMaterial( {
 
 					color: 0x0808080,
@@ -324,16 +390,44 @@ data[i].faces[j].points.length
 					}
 
 				}
+               
+                texture2 = THREE.ImageUtils.loadTexture("img/smileys/icon-frowny.png");
+                texture3 = THREE.ImageUtils.loadTexture("img/icon-angry-bird-2.png");
+//texture2.wrapS = THREE.RepeatWrapping;
+//texture2.wrapT = THREE.RepeatWrapping;
+                
+                
+                eyesMaterial = new THREE.SpriteMaterial({
+                    map : texture2,
+                    useScreenCoordinates : false
+                    //blending: THREE.AdditiveBlending
+                });
+                
+                birdsMaterial = new THREE.SpriteMaterial({
+                    map : texture3,
+                    useScreenCoordinates : false
+                    //blending: THREE.AdditiveBlending
+                });
+                
+                
                 
                 /*
-                eyesMaterial = new THREE.ParticleCanvasMaterial( {
+                eyesMaterial = new THREE.ParticleBasicMaterial({
+                    map: texture2, 
+                    transparent: true, 
+                    size: 5 
+                });
+                */
+        
+                /*
+                eyesMaterial = new THREE.SpriteCanvasMaterial( {
 
-					color: 0x000000,
+					color: 0xfff000,
 					program: function ( context ) {
 
 						context.beginPath();
 						context.arc( 0, 0, 1, 0, PI2, true );
-						context.closePath();
+						
 						context.fill();
 
 					}
@@ -341,8 +435,12 @@ data[i].faces[j].points.length
 				} );
                 */
                 
+
+                
+                
                 //console.log(scene.children);
                 raycaster = new THREE.Raycaster();
+                raycaster2 = new THREE.Raycaster();
                 projector = new THREE.Projector();
                 
 				renderer = new THREE.CanvasRenderer();
@@ -368,24 +466,7 @@ data[i].faces[j].points.length
                 console.log("PLAY!");
                 
                 //console.log($(video));
-                var offsetTop = $(video).offset().top;
-                var offsetLeft = $(video).offset().left;
                 
-                var x = 0;
-                var y = 0;
-                var vector = new THREE.Vector3(x + offsetLeft, y + offsetTop, 0.5);
-                raycaster.setFromCamera(vector, camera);
-                
-                var intersects = raycaster.intersectObjects(objects);
-                
-                if(intersects.length > 0){
-                    console.log("intersected!");
-                    
-                    var particle = new THREE.Particle( eyesMaterial );
-					particle.position = intersects[ 0 ].point;
-					particle.scale.x = particle.scale.y = 8;
-					scene.add( particle );
-                }
             }
 
 			function onWindowResize() {
@@ -418,6 +499,7 @@ data[i].faces[j].points.length
                 
                 /* Draw the video first then raycast through it */
                 var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
+                console.log("VECTOR 2: ", vector);
                 console.log(event.clientX);
                 console.log(event.clientY);
 				//projector.unprojectVector( vector, camera );
@@ -429,7 +511,15 @@ data[i].faces[j].points.length
                 //console.log(intersects);
 
                 if(intersects.length > 0){
+                    console.log("intersects : ", intersects[0]);
+                    var particle = new THREE.Particle( eyesMaterial );
+					particle.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z);
+					particle.scale.x = particle.scale.y = 8;
+					scene.add( particle );
+                    
                     intersects[0].object.callback();
+                    
+                    
                     
                 }
             }
