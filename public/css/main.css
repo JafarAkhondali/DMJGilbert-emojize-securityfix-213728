@@ -273,11 +273,56 @@ h1 .logo img{
 
 
 
+/* FOOTER*/
+.footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    
+    
+}
+.footer-wrapper{
+    position: relative;
+    background: #fff;
+    margin: 0 auto;
+    width: 640px;
+    
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.emojis{
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+    max-height: 100px;
+    overflow: hidden;
+}
+.emojis li{
+    display: inline-block;
+    vertical-align: center;
+    margin: 0 0.9em 10px 0;
+}
+.emojis li:last-child{
+    margin: 0;
+}
+.emojis li img{
+    width: 64px;
+    height: auto;
+}
 
-
-
-
-
+.arrow{
+    display: block;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 44px;
+    right: -32px;
+    background: url("../img/icon-arrow-down.png") no-repeat;
+    background-size: 32px;
+    cursor: pointer;
+}
 
 
 /* ==========================================================================
