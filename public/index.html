@@ -47,7 +47,7 @@
                     <h3>Level <span id="levelNumber">1</span></h3>
                     <span id="XPbar">&nbsp;</span>
                 </div>
---> 
+-->                    <a class="facebook" href="#,"><img src="img/img-facebook-share-button.png" alt=""></a>
                 </div>
             </header>
      
@@ -217,6 +217,7 @@
                         var intersects = raycaster2.intersectObjects(objects);
 
                         if(intersects.length > 0){
+                            /*
                             console.log("intersected!");
 
                             particle2 = new THREE.Sprite(eyesMaterial);
@@ -227,10 +228,11 @@
 
                             
                             scene.add( particle2 );
+                            */
                         }
                         
                         particle3 = new THREE.Sprite(birdsMaterial);
-                        var v = new THREE.Vector3(-189, -60, 50);
+                        var v = new THREE.Vector3(-219, -60, 30);
                 particle3.position.set(v.x, v.y, v.z);
                 particle3.scale.x = particle3.scale.y = 80;
                 scene.add(particle3);
@@ -392,7 +394,7 @@ data[i].faces[j].points.length
 				}
                
                 texture2 = THREE.ImageUtils.loadTexture("img/smileys/icon-frowny.png");
-                texture3 = THREE.ImageUtils.loadTexture("img/icon-angry-bird-2.png");
+                texture3 = THREE.ImageUtils.loadTexture("img/icon-iwatch.png");
 //texture2.wrapS = THREE.RepeatWrapping;
 //texture2.wrapT = THREE.RepeatWrapping;
                 
@@ -511,6 +513,7 @@ data[i].faces[j].points.length
                 //console.log(intersects);
 
                 if(intersects.length > 0){
+                    /*
                     console.log("intersects : ", intersects[0]);
                     var particle = new THREE.Particle( eyesMaterial );
 					particle.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z);
@@ -519,7 +522,7 @@ data[i].faces[j].points.length
                     
                     intersects[0].object.callback();
                     
-                    
+                    */
                     
                 }
             }
@@ -555,6 +558,7 @@ data[i].faces[j].points.length
 						}
 						imageContext.drawImage(img, x, y);
 					}
+                    
 
 					if ( texture ) texture.needsUpdate = true;
 					if ( textureReflection ) textureReflection.needsUpdate = true;

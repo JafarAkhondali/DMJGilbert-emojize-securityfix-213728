@@ -275,6 +275,15 @@ h1 .logo img{
     clear: both;
 }
 
+.facebook{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+.facebook img{
+    width: auto;
+    height: 36px;
+}
 
 
 /* FOOTER*/
